@@ -18,11 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final success = await authProvider.login(username, password);
 
-    if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login successful!')),
-      );
-    } else {
+    if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Invalid username or password')),
       );
@@ -36,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextField(
               controller: _usernameController,
@@ -51,6 +47,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               onPressed: () => _login(context),
               child: const Text("Login"),
+              style: ButtonStyle(
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
