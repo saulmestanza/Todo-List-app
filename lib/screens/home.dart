@@ -34,13 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
               return Dismissible(
                 key: Key(title),
                 direction: DismissDirection.endToStart,
-                onDismissed: (direction) {
-                  Provider.of<TodoProvider>(context, listen: false)
-                      .removeTodoItem(title);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('$title removed'),
-                  ));
-                },
+                confirmDismiss: (direction) async =>
+                    await _showDeleteConfirmationDialog(context, title),
                 background: Container(
                   color: Colors.red,
                   alignment: Alignment.centerRight,
@@ -58,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _displayDialog(context),
+        onPressed: () => _addItemDialog(context),
         tooltip: 'Add Item',
         child: Icon(Icons.add),
       ),
@@ -78,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _displayDialog(BuildContext context) async {
+  _addItemDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -105,5 +100,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           );
         });
+  }
+
+  _showDeleteConfirmationDialog(BuildContext context, String title) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Task'),
+          content: const Text('Are you sure you want to delete this task?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<TodoProvider>(context, listen: false)
+                    .removeTodoItem(title);
+
+                Navigator.of(context).pop();
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
