@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../provider/login_provider.dart';
+import '../provider/todo_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,7 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> _todoList = <String>[];
   final TextEditingController _textFieldController = TextEditingController();
 
   @override
@@ -26,7 +25,38 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView(children: _getItems()),
+      body: Consumer<TodoProvider>(
+        builder: (context, todoProvider, child) {
+          return ListView.separated(
+            itemCount: todoProvider.todoList.length,
+            itemBuilder: (context, index) {
+              String title = todoProvider.todoList[index];
+              return Dismissible(
+                key: Key(title),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) {
+                  Provider.of<TodoProvider>(context, listen: false)
+                      .removeTodoItem(title);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('$title removed'),
+                  ));
+                },
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(right: 16.0),
+                  child: Icon(Icons.delete, color: Colors.white),
+                ),
+                child: _buildTodoItem(title),
+              );
+            },
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.black,
+              thickness: 0.5,
+            ),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _displayDialog(context),
         tooltip: 'Add Item',
@@ -36,23 +66,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addTodoItem(String title) {
-    //Wrapping it inside a set state will notify
-    // the app that the state has changed
-
-    setState(() {
-      _todoList.add(title);
-    });
-    _textFieldController.clear();
+    if (title.isNotEmpty) {
+      Provider.of<TodoProvider>(context, listen: false).addTodoItem(title);
+      _textFieldController.clear();
+    }
   }
 
-  //Generate list of item widgets
   Widget _buildTodoItem(String title) {
     return ListTile(
       title: Text(title),
     );
   }
 
-  //Generate a single item widget
   _displayDialog(BuildContext context) async {
     return showDialog(
         context: context,
@@ -80,13 +105,5 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           );
         });
-  }
-
-  List<Widget> _getItems() {
-    final List<Widget> _todoWidgets = <Widget>[];
-    for (String title in _todoList) {
-      _todoWidgets.add(_buildTodoItem(title));
-    }
-    return _todoWidgets;
   }
 }
