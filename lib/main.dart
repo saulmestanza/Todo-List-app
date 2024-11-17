@@ -53,7 +53,7 @@ class _TodoListState extends State<TodoList> {
   }
 
   //Generate a single item widget
-  Future<AlertDialog> _displayDialog(BuildContext context) async {
+  _displayDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -64,14 +64,14 @@ class _TodoListState extends State<TodoList> {
               decoration: const InputDecoration(hintText: 'Enter task here'),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: const Text('ADD'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   _addTodoItem(_textFieldController.text);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: const Text('CANCEL'),
                 onPressed: () {
                   Navigator.of(context).pop();
