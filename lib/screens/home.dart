@@ -12,6 +12,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _textFieldController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<TodoProvider>(context, listen: false).fetchTasks();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -27,6 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Consumer<TodoProvider>(
         builder: (context, todoProvider, child) {
+          if (todoProvider.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
           return ListView.separated(
             itemCount: todoProvider.todoList.length,
             itemBuilder: (context, index) {
@@ -94,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
               TextButton(
                 child: const Text('CANCEL'),
                 onPressed: () {
+                  _textFieldController.clear();
                   Navigator.of(context).pop();
                 },
               )
