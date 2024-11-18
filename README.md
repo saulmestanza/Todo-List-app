@@ -10,6 +10,7 @@ I chose firebase first for the simplicity to configure in the firebase console a
 
 ## Credentials
 *username: user*
+
 *password: password*
 
 ## Number of hours invested. 
