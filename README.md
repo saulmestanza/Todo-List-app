@@ -1,4 +1,4 @@
-# todo
+# ToDo (Tasks)
 
 ## How to run?
 1. Download the project or git clone
@@ -13,5 +13,5 @@ I chose firebase first for the simplicity to configure in the firebase console a
 
 *password: password*
 
-## Number of hours invested. 
+## Number of hours invested
 4
