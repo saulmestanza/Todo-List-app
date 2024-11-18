@@ -1,16 +1,16 @@
 # todo
 
-A new Flutter project.
+## How to run?
+1. Download the project or git clone
+2. run `flutter pub get`
+3. run the project `flutter run`
 
-## Getting Started
+## Why i choose firebase storage as a database?
+I chose firebase first for the simplicity to configure in the firebase console and because its supported on the 3 platforms (android, ios and web). Just connecting with the api to the collections i can do a CRUD in a few lines of code. Also to demostrate my knowledge with apis and firebase.  
 
-This project is a starting point for a Flutter application.
+## Credentials
+*username: user*
+*password: password*
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Number of hours invested. 
+4
